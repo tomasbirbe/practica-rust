@@ -44,6 +44,8 @@ fn menu(options: &Vec<&str>) -> String {
 fn select_vet(vets: &Vec<Vet>) -> Result<usize, ParseIntError> {
     let mut menu_number = 1;
     println!("Seleccionar una veterinaria");
+
+    println!("0 - Salir");
     for vet in vets.iter() {
         println!("{} - {}", menu_number, vet.name);
         menu_number += 1;
@@ -73,18 +75,24 @@ fn main() {
             "2" => {
                 println!("\n");
                 let mut selected_vet: &Vet;
-                // loop {
-                match select_vet(&vets) {
-                    Ok(number) => {
-                        let a = vets.get(number - 1).unwrap();
-                        match a {
-                            Some() => todo!(),
-                            
+                loop {
+                    match select_vet(&vets) {
+                        Ok(number) => {
+                            if number == 0 {
+                                break;
+                            } else {
+                                match vets.get(number - 1) {
+                                    Some(vet) => {
+                                        println!("{:#?}", vet);
+                                        break;
+                                    }
+                                    None => println!("No existe esa veterinaria"),
+                                }
+                            }
                         }
-                    }
-                    Err(_) => todo!(),
-                };
-                // }
+                        Err(_) => println!("Ingresa un numero"),
+                    };
+                }
             }
             "0" => {
                 println!("\n");
